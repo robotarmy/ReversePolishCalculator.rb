@@ -1,14 +1,21 @@
 module RPNOperation
-   def operation(op,stack)
+   include FloatToSimpleFormat 
+  attr_accessor :stack
+  def reset
+    self.stack = []
+  end
+  def operation(op)
+    self.stack ||= reset()
     result = op
     if ['+','-','*','/'].include? op 
       unless stack.size >= 2
           raise MissingOperandsError.new
       end
-      second = stack.pop
-      first  = stack.pop
-      result = first.send(op,second)
+      second = format_input(stack.pop)
+      first  = format_input(stack.pop)
+      result = format_result(first.send(op,second))
     end
+    stack << result
     result
   end
 end
