@@ -1,27 +1,13 @@
 module RPNOperation
-   Ops = {
-    '+' => lambda {|first, second|
-        first + second
-      },
-    '-' => lambda {|first, second|
-        first - second
-      },
-    '*' => lambda {|first, second|
-        first * second
-      },
-    '/' => lambda {|first, second|
-        first / second
-      },
-  }
-  def operation(op,stack)
+   def operation(op,stack)
     result = op
-    if Ops.has_key? op 
+    if ['+','-','*','/'].include? op 
       unless stack.size >= 2
           raise MissingOperandsError.new
       end
       second = stack.pop
       first  = stack.pop
-      result = Ops[op].call(first,second)
+      result = first.send(op,second)
     end
     result
   end
